@@ -6,6 +6,8 @@ public class Pickup : MonoBehaviour {
 
     public Vector3 rotatePerSec;
     private Vector3 rotatePerFrame;
+
+    public int ScoreValue;
     void Start()
     {
         rotatePerFrame = rotatePerSec * Time.fixedDeltaTime;
@@ -16,6 +18,8 @@ public class Pickup : MonoBehaviour {
         if (other.CompareTag("Player"))
         {
             gameObject.SetActive(false);
+            PlayerController pc = other.gameObject.GetComponent<PlayerController>();
+            pc.AddScore(ScoreValue);
         }
     }
 

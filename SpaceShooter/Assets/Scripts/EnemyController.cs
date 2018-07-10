@@ -8,12 +8,25 @@ public class EnemyController : MonoBehaviour {
     public GameObject Bolt;
     public Transform BoltPosition;
 
+    public GameObject Explosion;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         rb.velocity = rb.transform.forward * Speed;
         StartCoroutine(Movement());
+        StartCoroutine(AutoFire());
 	}
+
+    private IEnumerator AutoFire()
+    {
+        while (true)
+        {
+            Instantiate(Bolt, BoltPosition.position, BoltPosition.rotation);
+            yield return new WaitForSeconds(1);
+        }
+    }
+
 
     private IEnumerator Movement()
     {
@@ -50,9 +63,26 @@ public class EnemyController : MonoBehaviour {
         rb.velocity = rb.transform.forward * Speed;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("PlayerBolt"))
+        {
+            GameObject exp = Instantiate(Explosion);
+            exp.transform.position = transform.position;
+            Destroy(gameObject);
+            Destroy(other.gameObject);
+        }
+        else if (other.gameObject.CompareTag("Player"))
+        {
+            GameObject exp = Instantiate(Explosion);
+            exp.transform.position = transform.position;
+            Destroy(gameObject);
+        }
+    }
 
-	// Update is called once per frame
-	void Update () {
-        Instantiate(Bolt, BoltPosition.position, BoltPosition.rotation);
+
+    // Update is called once per frame
+    void Update () {
+        
 	}
 }

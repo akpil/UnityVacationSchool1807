@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     public float FireRate;
     private float currentRate;
 
+    public GameObject Explosion;
 
 	// Use this for initialization
 	void Start () {
@@ -39,4 +40,14 @@ public class PlayerController : MonoBehaviour {
         }
         currentRate -= Time.deltaTime;
 	}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            GameObject exp = Instantiate(Explosion);
+            exp.transform.position = transform.position;
+            Destroy(gameObject);
+        }
+    }
 }

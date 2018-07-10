@@ -8,6 +8,8 @@ public class AsteriodMovement : MonoBehaviour {
     public float AngularForce;
     public float Speed;
 
+    public GameObject Explosion;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
@@ -18,9 +20,16 @@ public class AsteriodMovement : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("PlayerBolt"))
         {
+            GameObject exp = Instantiate(Explosion);
+            exp.transform.position = transform.position;
             Destroy(gameObject);
             Destroy(other.gameObject);
         }
-        
+        else if (other.gameObject.CompareTag("Player"))
+        {
+            GameObject exp = Instantiate(Explosion);
+            exp.transform.position = transform.position;
+            Destroy(gameObject);
+        }
     }
 }

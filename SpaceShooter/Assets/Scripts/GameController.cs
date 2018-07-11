@@ -79,6 +79,11 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void AddScore(int value)
+    {
+        Score += value;
+    }
+
 	// Update is called once per frame
 	void Update () {
 		

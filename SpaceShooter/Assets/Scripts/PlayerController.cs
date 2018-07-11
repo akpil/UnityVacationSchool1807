@@ -13,10 +13,13 @@ public class PlayerController : MonoBehaviour {
 
     public GameObject Explosion;
 
+    private SoundController soundControl;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         currentRate = 0;
+        soundControl = GameObject.FindGameObjectWithTag("SoundController").GetComponent<SoundController>();
     }
 	
 	// Update is called once per frame
@@ -37,6 +40,7 @@ public class PlayerController : MonoBehaviour {
             GameObject temp = Instantiate(Bolt);
             temp.transform.position = BoltPos.position;
             currentRate = FireRate;
+            soundControl.PlayerEffectSound((int)eSoundEffect.shotPlayer);
         }
         currentRate -= Time.deltaTime;
 	}
@@ -47,6 +51,7 @@ public class PlayerController : MonoBehaviour {
         {
             GameObject exp = Instantiate(Explosion);
             exp.transform.position = transform.position;
+            soundControl.PlayerEffectSound((int)eSoundEffect.expPlayer);
             Destroy(gameObject);
         }
     }

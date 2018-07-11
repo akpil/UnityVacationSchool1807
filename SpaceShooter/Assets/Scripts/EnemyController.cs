@@ -10,8 +10,10 @@ public class EnemyController : MonoBehaviour {
 
     public GameObject Explosion;
 
-	// Use this for initialization
-	void Start () {
+    public int ScoreValue;
+
+    // Use this for initialization
+    void Start () {
         rb = GetComponent<Rigidbody>();
         rb.velocity = rb.transform.forward * Speed;
         StartCoroutine(Movement());
@@ -71,6 +73,9 @@ public class EnemyController : MonoBehaviour {
             exp.transform.position = transform.position;
             Destroy(gameObject);
             Destroy(other.gameObject);
+
+            GameController control = (GameObject.FindGameObjectWithTag("GameController")).GetComponent<GameController>();
+            control.AddScore(ScoreValue);
         }
         else if (other.gameObject.CompareTag("Player"))
         {

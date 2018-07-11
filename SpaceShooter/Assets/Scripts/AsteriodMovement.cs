@@ -10,6 +10,8 @@ public class AsteriodMovement : MonoBehaviour {
 
     public GameObject Explosion;
 
+    public int ScoreValue;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
@@ -24,6 +26,9 @@ public class AsteriodMovement : MonoBehaviour {
             exp.transform.position = transform.position;
             Destroy(gameObject);
             Destroy(other.gameObject);
+
+            GameController control = (GameObject.FindGameObjectWithTag("GameController")).GetComponent<GameController>();
+            control.AddScore(ScoreValue);
         }
         else if (other.gameObject.CompareTag("Player"))
         {

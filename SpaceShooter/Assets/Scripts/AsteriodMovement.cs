@@ -24,16 +24,25 @@ public class AsteriodMovement : MonoBehaviour {
         {
             GameObject exp = Instantiate(Explosion);
             exp.transform.position = transform.position;
+            
+
+            GameController control = (GameObject.FindGameObjectWithTag("GameController")).
+                                            GetComponent<GameController>();
+            control.AddScore(ScoreValue);
+            (GameObject.FindGameObjectWithTag("SoundController")).
+                GetComponent<SoundController>().
+                PlayerEffectSound((int)eSoundEffect.expAstroid);
+
             Destroy(gameObject);
             Destroy(other.gameObject);
-
-            GameController control = (GameObject.FindGameObjectWithTag("GameController")).GetComponent<GameController>();
-            control.AddScore(ScoreValue);
         }
         else if (other.gameObject.CompareTag("Player"))
         {
             GameObject exp = Instantiate(Explosion);
             exp.transform.position = transform.position;
+            (GameObject.FindGameObjectWithTag("SoundController")).
+                GetComponent<SoundController>().
+                PlayerEffectSound((int)eSoundEffect.expAstroid);
             Destroy(gameObject);
         }
     }

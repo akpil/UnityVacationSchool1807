@@ -12,12 +12,19 @@ public class GameController : MonoBehaviour {
 
     public float StartWaitingTime;
     public float StageTimeGap;
+
+    public UIController ui;
+
+    private Coroutine harzardRoutine;
+    public BGScroll[] BGs;
+
     // Use this for initialization
     void Start () {
         //InvokeRepeating("SpawnHazards", 2, 3);
-        StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
-        
-	}
+
+        ui = GameObject.FindGameObjectWithTag("UIController").GetComponent<UIController>();
+        harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
+    }
 
     private IEnumerator Hazards(float startTime, float stageGap)
     {
@@ -82,6 +89,16 @@ public class GameController : MonoBehaviour {
     public void AddScore(int value)
     {
         Score += value;
+        ui.SetScore(Score);
+    }
+
+    public void GameOver()
+    {
+        StopCoroutine(harzardRoutine);
+        for (int i = 0; i < BGs.Length; i++)
+        {
+            BGs[i].StopScrolling();
+        }
     }
 
 	// Update is called once per frame

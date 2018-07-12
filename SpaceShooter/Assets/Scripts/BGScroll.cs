@@ -11,6 +11,15 @@ public class BGScroll : MonoBehaviour {
         rb.velocity = new Vector3(0, 0, -Speed);
 	}
 
+    public void StopScrolling()
+    {
+        rb.velocity = new Vector3(0, 0, 0);
+    }
+    public void StartScrolling()
+    {
+        rb.velocity = new Vector3(0, 0, -Speed);
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("BGTrigger"))

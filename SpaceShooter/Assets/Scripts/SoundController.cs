@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum eSoundEffect
 {
-    expAstroid, expEnemy, expPlayer, shotEnemy, shotPlayer
+    expAsteroid, expEnemy, expPlayer, shotEnemy, shotPlayer
 }
 
 public class SoundController : MonoBehaviour {

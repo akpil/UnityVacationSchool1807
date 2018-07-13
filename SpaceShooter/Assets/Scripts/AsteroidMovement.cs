@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AsteriodMovement : MonoBehaviour {
+public class AsteroidMovement : MonoBehaviour {
 
     private Rigidbody rb;
     public float AngularForce;
@@ -31,10 +31,12 @@ public class AsteriodMovement : MonoBehaviour {
             control.AddScore(ScoreValue);
             (GameObject.FindGameObjectWithTag("SoundController")).
                 GetComponent<SoundController>().
-                PlayerEffectSound((int)eSoundEffect.expAstroid);
+                PlayerEffectSound((int)eSoundEffect.expAsteroid);
 
-            Destroy(gameObject);
-            Destroy(other.gameObject);
+            //Destroy(gameObject);
+            //Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
         else if (other.gameObject.CompareTag("Player"))
         {
@@ -42,8 +44,9 @@ public class AsteriodMovement : MonoBehaviour {
             exp.transform.position = transform.position;
             (GameObject.FindGameObjectWithTag("SoundController")).
                 GetComponent<SoundController>().
-                PlayerEffectSound((int)eSoundEffect.expAstroid);
-            Destroy(gameObject);
+                PlayerEffectSound((int)eSoundEffect.expAsteroid);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

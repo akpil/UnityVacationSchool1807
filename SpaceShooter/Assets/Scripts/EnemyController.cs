@@ -83,7 +83,8 @@ public class EnemyController : MonoBehaviour {
             control.AddScore(ScoreValue);
 
             Destroy(gameObject);
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
         }
         else if (other.gameObject.CompareTag("Player"))
         {

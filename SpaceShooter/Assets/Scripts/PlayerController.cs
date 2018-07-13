@@ -15,11 +15,14 @@ public class PlayerController : MonoBehaviour {
 
     private SoundController soundControl;
 
+    private PlayerBoltPool boltPool;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         currentRate = 0;
         soundControl = GameObject.FindGameObjectWithTag("SoundController").GetComponent<SoundController>();
+        boltPool = GameObject.FindGameObjectWithTag("GameController").GetComponent<PlayerBoltPool>();
     }
 	
 	// Update is called once per frame
@@ -37,7 +40,9 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetButton("Fire1") && currentRate <= 0)
         {
-            GameObject temp = Instantiate(Bolt);
+            //GameObject temp = Instantiate(Bolt);
+            Bolt temp = boltPool.GetFromPool();
+            temp.gameObject.SetActive(true);
             temp.transform.position = BoltPos.position;
             currentRate = FireRate;
             soundControl.PlayerEffectSound((int)eSoundEffect.shotPlayer);

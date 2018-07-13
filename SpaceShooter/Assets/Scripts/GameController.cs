@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public GameObject[] Astroid;
-    public Rigidbody[] Astroid2;
+    public GameObject[] Asteroid;
+    public Rigidbody[] Asteroid2;
     public GameObject Enemy;
     public GameObject Player;
     public int Score;
@@ -21,11 +21,15 @@ public class GameController : MonoBehaviour {
 
     private bool isGameOver;
 
+    private AsteroidPool AsteroidP;
+
     // Use this for initialization
     void Start () {
         //InvokeRepeating("SpawnHazards", 2, 3);
         isGameOver = false;
         ui = GameObject.FindGameObjectWithTag("UIController").GetComponent<UIController>();
+        AsteroidP = GetComponent<AsteroidPool>();
+
         harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
     }
 
@@ -45,16 +49,18 @@ public class GameController : MonoBehaviour {
                     int val = Random.Range(0, 2);
                     if (val == 0)
                     {
-                        GameObject temp = Instantiate(Astroid[Random.Range(0, Astroid.Length)]);
+                        //GameObject temp = Instantiate(Asteroid[Random.Range(0, Asteroid.Length)]);
+                        AsteroidMovement temp = AsteroidP.GetFromPool(Random.Range(0, 3));
+                        temp.gameObject.SetActive(true);
                         float randPosX = Random.Range(-5f, 5f);
-                        temp.transform.position = new Vector3(randPosX, temp.transform.position.y, temp.transform.position.z);
+                        temp.transform.position = new Vector3(randPosX, temp.transform.position.y, 16.5f);
                         randInt--;
                     }
                     else
                     {
                         GameObject temp = Instantiate(Enemy);
                         float randPosX = Random.Range(-5f, 5f);
-                        temp.transform.position = new Vector3(randPosX, temp.transform.position.y, temp.transform.position.z);
+                        temp.transform.position = new Vector3(randPosX, temp.transform.position.y, 16.5f);
                         randEnem--;
                     }
                 }
@@ -62,14 +68,16 @@ public class GameController : MonoBehaviour {
                 {
                     GameObject temp = Instantiate(Enemy);
                     float randPosX = Random.Range(-5f, 5f);
-                    temp.transform.position = new Vector3(randPosX, temp.transform.position.y, temp.transform.position.z);
+                    temp.transform.position = new Vector3(randPosX, temp.transform.position.y, 16.5f);
                     randEnem--;
                 }
                 else if (randEnem <= 0)
                 {
-                    GameObject temp = Instantiate(Astroid[Random.Range(0, Astroid.Length)]);
+                    //GameObject temp = Instantiate(Asteroid[Random.Range(0, Asteroid.Length)]);
+                    AsteroidMovement temp = AsteroidP.GetFromPool(Random.Range(0, 3));
+                    temp.gameObject.SetActive(true);
                     float randPosX = Random.Range(-5f, 5f);
-                    temp.transform.position = new Vector3(randPosX, temp.transform.position.y, temp.transform.position.z);
+                    temp.transform.position = new Vector3(randPosX, temp.transform.position.y, 16.5f);
                     randInt--;
                 }
                 yield return spawnGap;
@@ -83,7 +91,7 @@ public class GameController : MonoBehaviour {
         int randInt = Random.Range(5,11);
         for (int i = 0; i < randInt; i++)
         {
-            GameObject temp = Instantiate(Astroid[Random.Range(0, Astroid.Length)]);
+            GameObject temp = Instantiate(Asteroid[Random.Range(0, Asteroid.Length)]);
             float randPosX = Random.Range(-5, 5);
             temp.transform.position = new Vector3(randPosX, temp.transform.position.y, temp.transform.position.z);
         }

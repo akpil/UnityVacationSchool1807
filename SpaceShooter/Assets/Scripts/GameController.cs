@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
     public GameObject[] Astroid;
     public Rigidbody[] Astroid2;
     public GameObject Enemy;
-
+    public GameObject Player;
     public int Score;
 
     public float StartWaitingTime;
@@ -18,10 +19,12 @@ public class GameController : MonoBehaviour {
     private Coroutine harzardRoutine;
     public BGScroll[] BGs;
 
+    private bool isGameOver;
+
     // Use this for initialization
     void Start () {
         //InvokeRepeating("SpawnHazards", 2, 3);
-
+        isGameOver = false;
         ui = GameObject.FindGameObjectWithTag("UIController").GetComponent<UIController>();
         harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
     }
@@ -92,6 +95,19 @@ public class GameController : MonoBehaviour {
         ui.SetScore(Score);
     }
 
+    public void Restart()
+    {
+        harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
+        for (int i = 0; i < BGs.Length; i++)
+        {
+            BGs[i].StartScrolling();
+        }
+        ui.Reset();
+        isGameOver = false;
+        Score = 0;
+        Instantiate(Player);
+    }
+
     public void GameOver()
     {
         StopCoroutine(harzardRoutine);
@@ -99,10 +115,16 @@ public class GameController : MonoBehaviour {
         {
             BGs[i].StopScrolling();
         }
+        ui.GameOver();
+        isGameOver = true;
     }
 
 	// Update is called once per frame
 	void Update () {
-		
+        if (Input.GetKeyDown(KeyCode.Return) && isGameOver)
+        {
+            //SceneManager.LoadScene(0);
+            Restart();
+        }
 	}
 }

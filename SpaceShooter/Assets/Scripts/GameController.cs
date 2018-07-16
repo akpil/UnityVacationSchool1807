@@ -22,8 +22,11 @@ public class GameController : MonoBehaviour {
     private bool isGameOver;
 
     private AsteroidPool AsteroidP;
+    private EnemyPool EnemyP;
     private EffectPool EffectP;
 
+    public int StartLifeCount;
+    public int CurrentLifeCount;
 
     // Use this for initialization
     void Start () {
@@ -32,7 +35,9 @@ public class GameController : MonoBehaviour {
         ui = GameObject.FindGameObjectWithTag("UIController").GetComponent<UIController>();
         AsteroidP = GetComponent<AsteroidPool>();
         EffectP = GetComponent<EffectPool>();
-
+        EnemyP = GetComponent<EnemyPool>();
+        Player = GameObject.FindGameObjectWithTag("Player");
+        CurrentLifeCount = StartLifeCount;
         harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
     }
 
@@ -61,7 +66,9 @@ public class GameController : MonoBehaviour {
                     }
                     else
                     {
-                        GameObject temp = Instantiate(Enemy);
+                        //GameObject temp = Instantiate(Enemy);
+                        EnemyController temp = EnemyP.GetFromPool();
+                        temp.gameObject.SetActive(true);
                         float randPosX = Random.Range(-5f, 5f);
                         temp.transform.position = new Vector3(randPosX, temp.transform.position.y, 16.5f);
                         randEnem--;
@@ -69,7 +76,8 @@ public class GameController : MonoBehaviour {
                 }
                 else if (randInt <= 0)
                 {
-                    GameObject temp = Instantiate(Enemy);
+                    EnemyController temp = EnemyP.GetFromPool();
+                    temp.gameObject.SetActive(true);
                     float randPosX = Random.Range(-5f, 5f);
                     temp.transform.position = new Vector3(randPosX, temp.transform.position.y, 16.5f);
                     randEnem--;
@@ -121,18 +129,31 @@ public class GameController : MonoBehaviour {
         ui.Reset();
         isGameOver = false;
         Score = 0;
-        Instantiate(Player);
+        CurrentLifeCount = StartLifeCount;
+        Player.SetActive(true);
+        Player.transform.position = Vector3.zero;
     }
 
     public void GameOver()
     {
-        StopCoroutine(harzardRoutine);
-        for (int i = 0; i < BGs.Length; i++)
+        EnemyP.StopAll();
+        AsteroidP.StopAll();
+        if (CurrentLifeCount > 1)
         {
-            BGs[i].StopScrolling();
+            Player.SetActive(true);
+            Player.transform.position = Vector3.zero;
+            CurrentLifeCount--;
         }
-        ui.GameOver();
-        isGameOver = true;
+        else
+        {
+            StopCoroutine(harzardRoutine);
+            for (int i = 0; i < BGs.Length; i++)
+            {
+                BGs[i].StopScrolling();
+            }
+            ui.GameOver();
+            isGameOver = true;
+        }
     }
 
 	// Update is called once per frame

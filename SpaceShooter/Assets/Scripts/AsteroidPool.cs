@@ -28,10 +28,19 @@ public class AsteroidPool : MonoBehaviour {
         AsteroidsPool[index].Add(temp);
         return temp;
     }
+    public void StopAll()
+    {
+        for (int i = 0; i < AsteroidsPool.Length; i++)
+        {
+            for (int j = 0; j < AsteroidsPool[i].Count; j++)
+            {
+                AsteroidsPool[i][j].gameObject.SetActive(false);
+            }
+        }
+    }
 
-	
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }

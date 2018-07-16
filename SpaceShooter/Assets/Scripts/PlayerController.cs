@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour {
 
     private PlayerBoltPool boltPool;
 
+    private GameController control;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
@@ -54,12 +56,17 @@ public class PlayerController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            GameObject exp = Instantiate(Explosion);
+            if (control == null)
+            {
+                control = (GameObject.FindGameObjectWithTag("GameController")).
+                GetComponent<GameController>();
+            }
+            GameObject exp = control.GetEffect(eParticleEffect.expPlayer);
             exp.transform.position = transform.position;
+            exp.SetActive(true);
             soundControl.PlayerEffectSound((int)eSoundEffect.expPlayer);
             gameObject.SetActive(false);
-            GameObject.FindGameObjectWithTag("GameController").
-                GetComponent<GameController>().GameOver();
+            control.GameOver();
         }
     }
 }

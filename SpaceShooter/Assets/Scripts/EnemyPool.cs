@@ -26,6 +26,13 @@ public class EnemyPool : MonoBehaviour {
         return temp;
     }
 
+    public void StopAll()
+    {
+        for (int i = 0; i < enemyPool.Count; i++)
+        {
+            enemyPool[i].gameObject.SetActive(false);
+        }
+    }
 
 	// Update is called once per frame
 	void Update () {

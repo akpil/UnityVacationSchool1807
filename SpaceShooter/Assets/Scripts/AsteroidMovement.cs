@@ -12,6 +12,8 @@ public class AsteroidMovement : MonoBehaviour {
 
     public int ScoreValue;
 
+    private GameController control;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -26,13 +28,19 @@ public class AsteroidMovement : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("PlayerBolt"))
         {
-            GameObject exp = Instantiate(Explosion);
-            exp.transform.position = transform.position;
-            
+            //GameObject exp = Instantiate(Explosion);
+            //exp.transform.position = transform.position;
 
-            GameController control = (GameObject.FindGameObjectWithTag("GameController")).
+            if (control == null)
+            {
+                control = (GameObject.FindGameObjectWithTag("GameController")).
                                             GetComponent<GameController>();
+            }
             control.AddScore(ScoreValue);
+            GameObject exp = control.GetEffect(eParticleEffect.expAsteroid);
+            exp.transform.position = transform.position;
+            exp.SetActive(true);
+
             (GameObject.FindGameObjectWithTag("SoundController")).
                 GetComponent<SoundController>().
                 PlayerEffectSound((int)eSoundEffect.expAsteroid);
@@ -44,7 +52,14 @@ public class AsteroidMovement : MonoBehaviour {
         }
         else if (other.gameObject.CompareTag("Player"))
         {
-            GameObject exp = Instantiate(Explosion);
+            //GameObject exp = Instantiate(Explosion);
+            //exp.transform.position = transform.position;
+            if (control == null)
+            {
+                control = (GameObject.FindGameObjectWithTag("GameController")).
+                                            GetComponent<GameController>();
+            }
+            GameObject exp = control.GetEffect(eParticleEffect.expAsteroid);
             exp.transform.position = transform.position;
             (GameObject.FindGameObjectWithTag("SoundController")).
                 GetComponent<SoundController>().

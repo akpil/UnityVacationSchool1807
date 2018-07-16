@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour {
             GameObject exp = Instantiate(Explosion);
             exp.transform.position = transform.position;
             soundControl.PlayerEffectSound((int)eSoundEffect.expPlayer);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             GameObject.FindGameObjectWithTag("GameController").
                 GetComponent<GameController>().GameOver();
         }

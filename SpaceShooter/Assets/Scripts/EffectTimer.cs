@@ -14,7 +14,7 @@ public class EffectTimer : MonoBehaviour {
     private IEnumerator DestroyAfterGap()
     {
         yield return new WaitForSeconds(Gap);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 

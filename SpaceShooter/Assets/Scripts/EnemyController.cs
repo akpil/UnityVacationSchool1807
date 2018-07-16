@@ -87,24 +87,25 @@ public class EnemyController : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("PlayerBolt"))
-        {
-            GameObject exp = Instantiate(Explosion);
-            exp.transform.position = transform.position;
-            
+        {            
             //GameController control = (GameObject.FindGameObjectWithTag("GameController")).GetComponent<GameController>();
             soundControl.PlayerEffectSound((int)eSoundEffect.expEnemy);
             control.AddScore(ScoreValue);
+            GameObject exp = control.GetEffect(eParticleEffect.expEnemy);
+            exp.transform.position = transform.position;
+            exp.SetActive(true);
 
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             //Destroy(other.gameObject);
             other.gameObject.SetActive(false);
         }
         else if (other.gameObject.CompareTag("Player"))
         {
-            GameObject exp = Instantiate(Explosion);
+            GameObject exp = control.GetEffect(eParticleEffect.expEnemy);
             exp.transform.position = transform.position;
+            exp.SetActive(true);
             soundControl.PlayerEffectSound((int)eSoundEffect.expEnemy);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

@@ -22,6 +22,8 @@ public class GameController : MonoBehaviour {
     private bool isGameOver;
 
     private AsteroidPool AsteroidP;
+    private EffectPool EffectP;
+
 
     // Use this for initialization
     void Start () {
@@ -29,6 +31,7 @@ public class GameController : MonoBehaviour {
         isGameOver = false;
         ui = GameObject.FindGameObjectWithTag("UIController").GetComponent<UIController>();
         AsteroidP = GetComponent<AsteroidPool>();
+        EffectP = GetComponent<EffectPool>();
 
         harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
     }
@@ -101,6 +104,11 @@ public class GameController : MonoBehaviour {
     {
         Score += value;
         ui.SetScore(Score);
+    }
+
+    public GameObject GetEffect(eParticleEffect index)
+    {
+        return EffectP.GetFromPool((int)index);
     }
 
     public void Restart()

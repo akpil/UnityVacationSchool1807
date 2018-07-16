@@ -5,7 +5,9 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour {
     private Rigidbody rb;
     public float Speed;
-    public GameObject Bolt;
+    //public GameObject Bolt;
+    private EnemyBoltPool boltPool;
+    private GameController control;
     public Transform BoltPosition;
 
     public GameObject Explosion;
@@ -14,9 +16,16 @@ public class EnemyController : MonoBehaviour {
     private SoundController soundControl;
 
 
-    // Use this for initialization
-    void Start () {
+    void Awake()
+    {
+        GameObject GC = GameObject.FindGameObjectWithTag("GameController");
+        boltPool = GC.GetComponent<EnemyBoltPool>();
+        control = GC.GetComponent<GameController>();
         rb = GetComponent<Rigidbody>();
+    }
+
+    
+    void OnEnable () {
         rb.velocity = rb.transform.forward * Speed;
         soundControl = (GameObject.FindGameObjectWithTag("SoundController")).
                         GetComponent<SoundController>();
@@ -29,7 +38,11 @@ public class EnemyController : MonoBehaviour {
     {
         while (true)
         {
-            Instantiate(Bolt, BoltPosition.position, BoltPosition.rotation);
+            //Instantiate(Bolt, BoltPosition.position, BoltPosition.rotation);
+            Bolt temp = boltPool.GetFromPool();
+            temp.gameObject.SetActive(true);
+            temp.transform.position = BoltPosition.position;
+            temp.transform.rotation = BoltPosition.rotation;
             soundControl.PlayerEffectSound((int)eSoundEffect.shotEnemy);
             yield return new WaitForSeconds(1);
         }
@@ -78,7 +91,7 @@ public class EnemyController : MonoBehaviour {
             GameObject exp = Instantiate(Explosion);
             exp.transform.position = transform.position;
             
-            GameController control = (GameObject.FindGameObjectWithTag("GameController")).GetComponent<GameController>();
+            //GameController control = (GameObject.FindGameObjectWithTag("GameController")).GetComponent<GameController>();
             soundControl.PlayerEffectSound((int)eSoundEffect.expEnemy);
             control.AddScore(ScoreValue);
 

@@ -12,9 +12,13 @@ public class AsteroidMovement : MonoBehaviour {
 
     public int ScoreValue;
 
-	// Use this for initialization
-	void Start () {
+    void Awake()
+    {
         rb = GetComponent<Rigidbody>();
+    }
+
+	// Use this for initialization
+	void OnEnable () {
         rb.angularVelocity = Random.onUnitSphere * AngularForce;
         rb.velocity = new Vector3(0, 0, -Speed);
     }

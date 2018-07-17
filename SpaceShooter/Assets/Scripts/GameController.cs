@@ -24,9 +24,11 @@ public class GameController : MonoBehaviour {
     private AsteroidPool AsteroidP;
     private EnemyPool EnemyP;
     private EffectPool EffectP;
+    private ItemPool ItemP;
 
     public int StartLifeCount;
     public int CurrentLifeCount;
+    private int ItemSpawnCount;
 
     // Use this for initialization
     void Start () {
@@ -36,9 +38,11 @@ public class GameController : MonoBehaviour {
         AsteroidP = GetComponent<AsteroidPool>();
         EffectP = GetComponent<EffectPool>();
         EnemyP = GetComponent<EnemyPool>();
+        ItemP = GetComponent<ItemPool>();
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         CurrentLifeCount = StartLifeCount;
         ui.SetLife(CurrentLifeCount);
+        ItemSpawnCount = 0;
         harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
     }
 
@@ -111,8 +115,17 @@ public class GameController : MonoBehaviour {
 
     public void AddScore(int value)
     {
+        ItemSpawnCount++;
         Score += value;
         ui.SetScore(Score);
+        if (ItemSpawnCount >= 5)
+        {
+            ItemSpawnCount -= 5;
+            GameObject temp = ItemP.GetFromPool(Random.Range(0, 2));
+            temp.gameObject.SetActive(true);
+            float randPosX = Random.Range(-5f, 5f);
+            temp.transform.position = new Vector3(randPosX, temp.transform.position.y, 16.5f);
+        }
     }
 
     public GameObject GetEffect(eParticleEffect index)

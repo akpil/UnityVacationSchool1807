@@ -33,6 +33,10 @@ public class EnemyController : MonoBehaviour {
         StartCoroutine(Movement());
         StartCoroutine(AutoFire());
     }
+    void OnDisable()
+    {
+        transform.position = new Vector3(transform.position.x, transform.position.y, 16.5f);
+    }
 
     private IEnumerator AutoFire()
     {
@@ -40,9 +44,9 @@ public class EnemyController : MonoBehaviour {
         {
             //Instantiate(Bolt, BoltPosition.position, BoltPosition.rotation);
             Bolt temp = boltPool.GetFromPool();
-            temp.gameObject.SetActive(true);
             temp.transform.position = BoltPosition.position;
             temp.transform.rotation = BoltPosition.rotation;
+            temp.gameObject.SetActive(true);
             soundControl.PlayerEffectSound((int)eSoundEffect.shotEnemy);
             yield return new WaitForSeconds(1);
         }

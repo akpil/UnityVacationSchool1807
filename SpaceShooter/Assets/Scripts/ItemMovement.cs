@@ -33,11 +33,11 @@ public class ItemMovement : MonoBehaviour
             }
             if (gameObject.CompareTag("BoltChange"))
             {
-
+                control.ChangeBolt();
             }
             else if (gameObject.CompareTag("LifeUp"))
             {
-
+                control.AddLife(1);
             }
             gameObject.SetActive(false);
         }

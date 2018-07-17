@@ -8,11 +8,17 @@ public class UIController : MonoBehaviour {
     public Text scoreText;
     public Text gameOverText;
     public Text resetNotifyText;
+    public Text lifeText;
     // Use this for initialization
     void Start () {
         scoreText.text = "Score : 0";
         gameOverText.text = "";
         resetNotifyText.text = "";
+    }
+
+    public void SetLife(int value)
+    {
+        lifeText.text = "X " + value.ToString();
     }
 
     public void SetScore(int value)

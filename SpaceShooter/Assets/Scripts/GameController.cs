@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     public GameObject[] Asteroid;
     public Rigidbody[] Asteroid2;
     public GameObject Enemy;
-    public GameObject Player;
+    public PlayerController Player;
     public int Score;
 
     public float StartWaitingTime;
@@ -36,8 +36,9 @@ public class GameController : MonoBehaviour {
         AsteroidP = GetComponent<AsteroidPool>();
         EffectP = GetComponent<EffectPool>();
         EnemyP = GetComponent<EnemyPool>();
-        Player = GameObject.FindGameObjectWithTag("Player");
+        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         CurrentLifeCount = StartLifeCount;
+        ui.SetLife(CurrentLifeCount);
         harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
     }
 
@@ -119,6 +120,17 @@ public class GameController : MonoBehaviour {
         return EffectP.GetFromPool((int)index);
     }
 
+    public void AddLife(int value)
+    {
+        CurrentLifeCount += value;
+        ui.SetLife(CurrentLifeCount);
+    }
+
+    public void ChangeBolt()
+    {
+        Player.ChangeBolt(5);
+    }
+
     public void Restart()
     {
         harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
@@ -129,8 +141,11 @@ public class GameController : MonoBehaviour {
         ui.Reset();
         isGameOver = false;
         Score = 0;
+
         CurrentLifeCount = StartLifeCount;
-        Player.SetActive(true);
+        ui.SetLife(CurrentLifeCount);
+
+        Player.gameObject.SetActive(true);
         Player.transform.position = Vector3.zero;
     }
 
@@ -140,9 +155,8 @@ public class GameController : MonoBehaviour {
         AsteroidP.StopAll();
         if (CurrentLifeCount > 1)
         {
-            Player.SetActive(true);
+            Player.gameObject.SetActive(true);
             Player.transform.position = Vector3.zero;
-            CurrentLifeCount--;
         }
         else
         {
@@ -154,6 +168,8 @@ public class GameController : MonoBehaviour {
             ui.GameOver();
             isGameOver = true;
         }
+        CurrentLifeCount--;
+        ui.SetLife(CurrentLifeCount);
     }
 
 	// Update is called once per frame

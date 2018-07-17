@@ -6,23 +6,25 @@ public class PlayerController : MonoBehaviour {
     public Rigidbody rb;
     public float Speed;
     public float RotateAngle;
+
     public GameObject Bolt;
     public Transform BoltPos;
+    private PlayerBoltPool boltPool;
+    private Vector3 boltSize;
+    private float boltSizeTimer;
     public float FireRate;
     private float currentRate;
 
     public GameObject Explosion;
 
-    private SoundController soundControl;
-
-    private PlayerBoltPool boltPool;
-
     private GameController control;
+    private SoundController soundControl;
 
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         currentRate = 0;
+        boltSize = Vector3.one;
         soundControl = GameObject.FindGameObjectWithTag("SoundController").GetComponent<SoundController>();
         boltPool = GameObject.FindGameObjectWithTag("GameController").GetComponent<PlayerBoltPool>();
     }
@@ -39,18 +41,40 @@ public class PlayerController : MonoBehaviour {
         rb.position = new Vector3(Mathf.Clamp(rb.position.x, -5, 5),
                                   0,
                                   Mathf.Clamp(rb.position.z, -4, 9));
-
+        if (boltSizeTimer > 0)
+        {
+            boltSize = Vector3.one * 5;
+            boltSizeTimer -= Time.deltaTime;
+        }
+        else
+        {
+            boltSize = Vector3.one;
+        }
         if (Input.GetButton("Fire1") && currentRate <= 0)
         {
             //GameObject temp = Instantiate(Bolt);
             Bolt temp = boltPool.GetFromPool();
             temp.gameObject.SetActive(true);
             temp.transform.position = BoltPos.position;
+            temp.transform.localScale = boltSize;
+
             currentRate = FireRate;
             soundControl.PlayerEffectSound((int)eSoundEffect.shotPlayer);
         }
         currentRate -= Time.deltaTime;
 	}
+
+    public void ChangeBolt(float time)
+    {
+        if (boltSizeTimer < 0)
+        {
+            boltSizeTimer = time;
+        }
+        else
+        {
+            boltSizeTimer += time;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {

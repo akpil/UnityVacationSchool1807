@@ -26,6 +26,11 @@ public class UIController : MonoBehaviour {
         scoreText.text = "Score : " + value.ToString();
     }
 
+    public void SetBossHP(float value)
+    {
+        
+    }
+
     public void GameOver()
     {
         gameOverText.text = "Game Over";

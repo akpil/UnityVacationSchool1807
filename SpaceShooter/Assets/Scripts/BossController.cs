@@ -14,6 +14,7 @@ public class BossController : MonoBehaviour {
 
     private EnemyBoltPool boltPool;
     private SoundController soundControl;
+    private GameController control;
 
 	// Use this for initialization
 	void Awake () {
@@ -22,6 +23,8 @@ public class BossController : MonoBehaviour {
                                                 GetComponent<SoundController>();
         boltPool = GameObject.FindGameObjectWithTag("BossPool").
                                                 GetComponent<EnemyBoltPool>();
+        control = GameObject.FindGameObjectWithTag("GameController").
+                                                GetComponent<GameController>();
     }
 
     void OnEnable() {
@@ -29,8 +32,26 @@ public class BossController : MonoBehaviour {
         HP = currentHP;
         hitFlag = false;
         StartCoroutine(BossMovement());
+        control.SetBossHP(HP, currentHP);
     }
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("PlayerBolt"))
+        {
+            HP--;
+            control.SetBossHP(HP, currentHP);
+            other.gameObject.SetActive(false);
+            if (HP <= 0)
+            {
+                soundControl.PlayerEffectSound((int)eSoundEffect.expEnemy);
+                control.AddScore(10);
+                GameObject exp = control.GetEffect(eParticleEffect.expEnemy);
+                exp.transform.position = transform.position;
+                exp.SetActive(true);
+                gameObject.SetActive(false);
+            }
+        }
+    }
     private IEnumerator BossMovement()
     {
         while (true)
@@ -51,43 +72,43 @@ public class BossController : MonoBehaviour {
             StartCoroutine(BossFire(2));
             yield return new WaitForSeconds(2);
             rb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(2);
 
             rb.velocity += new Vector3(Speed, 0, 0);
             StartCoroutine(BossFire(2));
             yield return new WaitForSeconds(2);
             rb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(2);
 
             rb.velocity += new Vector3(Speed, 0, 0);
             StartCoroutine(BossFire(2));
             yield return new WaitForSeconds(2);
             rb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(2);
 
             rb.velocity += new Vector3(-Speed, 0, 0);
             StartCoroutine(BossFire(4));
             yield return new WaitForSeconds(4);
             rb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(2);
 
             rb.velocity += new Vector3(Speed, 0, 0);
             StartCoroutine(BossFire(4));
             yield return new WaitForSeconds(4);
             rb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(2);
 
             rb.velocity += new Vector3(-Speed, 0, 0);
             StartCoroutine(BossFire(2));
             yield return new WaitForSeconds(2);
             rb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(2);
         }
     }
 
     private IEnumerator BossFire(float timer)
     {
-        WaitForSeconds gap = new WaitForSeconds(.4f);
+        WaitForSeconds gap = new WaitForSeconds(.6f);
         while (timer > 0)
         {
             Bolt temp = boltPool.GetFromPool();
@@ -96,7 +117,7 @@ public class BossController : MonoBehaviour {
             temp.gameObject.SetActive(true);
             soundControl.PlayerEffectSound((int)eSoundEffect.shotEnemy);
             yield return gap;
-            timer -= .4f;
+            timer -= .6f;
         }
     }
 

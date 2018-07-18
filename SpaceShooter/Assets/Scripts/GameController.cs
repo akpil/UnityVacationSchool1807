@@ -25,6 +25,10 @@ public class GameController : MonoBehaviour {
     private EnemyPool EnemyP;
     private EffectPool EffectP;
     private ItemPool ItemP;
+    private BossPool BossP;
+    private bool IsBossAlive;
+    public int BossSpawnCount;
+    private int CurrentBossSpawnCount;
 
     public int StartLifeCount;
     public int CurrentLifeCount;
@@ -39,11 +43,14 @@ public class GameController : MonoBehaviour {
         EffectP = GetComponent<EffectPool>();
         EnemyP = GetComponent<EnemyPool>();
         ItemP = GetComponent<ItemPool>();
+        BossP = GameObject.FindGameObjectWithTag("BossPool").GetComponent<BossPool>();
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         CurrentLifeCount = StartLifeCount;
         ui.SetLife(CurrentLifeCount);
         ItemSpawnCount = 0;
-        //harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
+        IsBossAlive = false;
+        CurrentBossSpawnCount = BossSpawnCount;
+        harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
     }
 
     private IEnumerator Hazards(float startTime, float stageGap)
@@ -98,7 +105,19 @@ public class GameController : MonoBehaviour {
                 }
                 yield return spawnGap;
             }
+            CurrentBossSpawnCount--;
             yield return gap;
+            if (CurrentBossSpawnCount <= 0)
+            {
+                BossController boss = BossP.GetFromPool();
+                boss.transform.position = new Vector3(0, boss.transform.position.y, 18.5f);
+                boss.gameObject.SetActive(true);
+                IsBossAlive = true;
+            }
+            while (IsBossAlive)
+            {
+                yield return gap;
+            }
         }
     }
 
@@ -111,6 +130,15 @@ public class GameController : MonoBehaviour {
             float randPosX = Random.Range(-5, 5);
             temp.transform.position = new Vector3(randPosX, temp.transform.position.y, temp.transform.position.z);
         }
+    }
+
+    public void SetBossHP(int current, int max)
+    {
+        if (current <= 0)
+        {
+            IsBossAlive = false;
+        }
+        ui.SetBossHP((float)current / max);
     }
 
     public void AddScore(int value)

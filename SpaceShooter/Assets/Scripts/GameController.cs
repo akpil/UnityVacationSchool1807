@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour {
         CurrentLifeCount = StartLifeCount;
         ui.SetLife(CurrentLifeCount);
         ItemSpawnCount = 0;
-        harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
+        //harzardRoutine = StartCoroutine(Hazards(StartWaitingTime, StageTimeGap));
     }
 
     private IEnumerator Hazards(float startTime, float stageGap)

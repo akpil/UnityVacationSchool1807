@@ -28,27 +28,11 @@ public class AsteroidMovement : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("PlayerBolt"))
         {
-            //GameObject exp = Instantiate(Explosion);
-            //exp.transform.position = transform.position;
-
-            if (control == null)
-            {
-                control = (GameObject.FindGameObjectWithTag("GameController")).
-                                            GetComponent<GameController>();
-            }
-            control.AddScore(ScoreValue);
-            GameObject exp = control.GetEffect(eParticleEffect.expAsteroid);
-            exp.transform.position = transform.position;
-            exp.SetActive(true);
-
-            (GameObject.FindGameObjectWithTag("SoundController")).
-                GetComponent<SoundController>().
-                PlayerEffectSound((int)eSoundEffect.expAsteroid);
+            Hit();
 
             //Destroy(gameObject);
             //Destroy(other.gameObject);
             other.gameObject.SetActive(false);
-            gameObject.SetActive(false);
         }
         else if (other.gameObject.CompareTag("Player"))
         {
@@ -67,5 +51,22 @@ public class AsteroidMovement : MonoBehaviour {
             //Destroy(gameObject);
             gameObject.SetActive(false);
         }
+    }
+    public void Hit()
+    {
+        if (control == null)
+        {
+            control = (GameObject.FindGameObjectWithTag("GameController")).
+                                        GetComponent<GameController>();
+        }
+        control.AddScore(ScoreValue);
+        GameObject exp = control.GetEffect(eParticleEffect.expAsteroid);
+        exp.transform.position = transform.position;
+        exp.SetActive(true);
+
+        (GameObject.FindGameObjectWithTag("SoundController")).
+            GetComponent<SoundController>().
+            PlayerEffectSound((int)eSoundEffect.expAsteroid);
+        gameObject.SetActive(false);
     }
 }

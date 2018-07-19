@@ -29,19 +29,19 @@ public class BossController : MonoBehaviour {
 
     void OnEnable() {
         rb.velocity = transform.forward * Speed;
-        HP = currentHP;
+        currentHP = HP;
         hitFlag = false;
         StartCoroutine(BossMovement());
-        control.SetBossHP(HP, currentHP);
+        control.SetBossHP(currentHP, HP);
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerBolt"))
+        if (hitFlag && other.gameObject.CompareTag("PlayerBolt"))
         {
-            HP--;
-            control.SetBossHP(HP, currentHP);
+            currentHP--;
+            control.SetBossHP(currentHP, HP);
             other.gameObject.SetActive(false);
-            if (HP <= 0)
+            if (currentHP <= 0)
             {
                 soundControl.PlayerEffectSound((int)eSoundEffect.expEnemy);
                 control.AddScore(10);

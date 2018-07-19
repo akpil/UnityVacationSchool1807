@@ -10,7 +10,12 @@ public class Bolt : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         rb.velocity = transform.up * Speed;
 	}
-	
+
+    public void Hit()
+    {
+        gameObject.SetActive(false);
+    }
+
 	// Update is called once per frame
 	void Update () {
 		

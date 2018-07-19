@@ -7,7 +7,7 @@ public class EffectTimer : MonoBehaviour {
     public float Gap;
 
 	// Use this for initialization
-	void Start () {
+	void OnEnable () {
         StartCoroutine(DestroyAfterGap());
 	}
 

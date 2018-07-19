@@ -9,6 +9,10 @@ public class UIController : MonoBehaviour {
     public Text gameOverText;
     public Text resetNotifyText;
     public Text lifeText;
+    [SerializeField]
+    private GameObject BossHPBackground;
+    [SerializeField]
+    private Image BossHPBar;
     // Use this for initialization
     void Start () {
         scoreText.text = "Score : 0";
@@ -28,7 +32,16 @@ public class UIController : MonoBehaviour {
 
     public void SetBossHP(float value)
     {
-        
+        Debug.Log(value);
+        if (value > 0)
+        {
+            BossHPBar.fillAmount = value;
+            BossHPBackground.SetActive(true);
+        }
+        else
+        {
+            BossHPBackground.SetActive(false);
+        }
     }
 
     public void GameOver()

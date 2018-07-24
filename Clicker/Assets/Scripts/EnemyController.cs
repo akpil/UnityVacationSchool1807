@@ -24,6 +24,11 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
+    public void Hit(float value)
+    {
+        Debug.Log("hit damage : " + value.ToString());
+    }
+
 	// Update is called once per frame
 	void Update () {
         

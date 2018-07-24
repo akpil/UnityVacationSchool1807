@@ -6,6 +6,10 @@ public class PlayerController : MonoBehaviour {
 
     private Animator anim;
 
+    [SerializeField]
+    private Transform bulletPos;
+    [SerializeField]
+    private BulletPool bulletP;
 	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
@@ -14,6 +18,9 @@ public class PlayerController : MonoBehaviour {
     public void Attack()
     {
         anim.SetBool(AnimationHashList.AnimHashAttack, true);
+        Bullet t = bulletP.GetFromPool();
+        t.transform.position = bulletPos.position;
+        t.gameObject.SetActive(true);
     }
     public void AttackFinish()
     {

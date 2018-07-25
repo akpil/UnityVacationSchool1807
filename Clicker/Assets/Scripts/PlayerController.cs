@@ -15,11 +15,12 @@ public class PlayerController : MonoBehaviour {
         anim = GetComponent<Animator>();
     }
 
-    public void Attack()
+    public void Attack(double atk)
     {
         anim.SetBool(AnimationHashList.AnimHashAttack, true);
         Bullet t = bulletP.GetFromPool();
         t.transform.position = bulletPos.position;
+        t.SetAtk(atk);
         t.gameObject.SetActive(true);
     }
     public void AttackFinish()
@@ -29,13 +30,6 @@ public class PlayerController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Attack();
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            anim.SetBool(AnimationHashList.AnimHashDead, true);
-        }
+        
     }
 }

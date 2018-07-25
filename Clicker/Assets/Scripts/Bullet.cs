@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour {
     private Rigidbody2D rb;
     [SerializeField]
     private float Speed;
-    private float atk;
+    private double atk;
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-    public void SetAtk(float value)
+    public void SetAtk(double value)
     {
         atk = value;
     }

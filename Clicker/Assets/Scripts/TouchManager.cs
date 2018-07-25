@@ -6,6 +6,9 @@ public class TouchManager : MonoBehaviour {
 
     GameController control;
 
+    [SerializeField]
+    private GameObjectPool touchEffectPool;
+
 	// Use this for initialization
 	void Start () {
         control = GameObject.FindGameObjectWithTag("GameController").
@@ -34,8 +37,10 @@ public class TouchManager : MonoBehaviour {
 
             if (Physics.Raycast(ori, direction, out hit))
             { 
-                Debug.Log(hit.point);
                 control.Touch();
+                GameObject temp = touchEffectPool.GetFromPool();
+                temp.transform.position = hit.point;
+                temp.SetActive(true);
             }
         }
 	}

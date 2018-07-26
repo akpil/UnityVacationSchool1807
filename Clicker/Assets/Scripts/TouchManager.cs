@@ -24,6 +24,16 @@ public class TouchManager : MonoBehaviour {
 	void Update () {
         if (TouchCheck())
         {
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+
+                Touch a = Input.GetTouch(i);
+                if (a.phase == TouchPhase.Began)
+                {
+                    //a.position;
+                }                
+            }
+            
             Vector3 ori = Camera.main.ScreenToWorldPoint(
                     new Vector3(Input.mousePosition.x, 
                                 Input.mousePosition.y,

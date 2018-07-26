@@ -20,6 +20,13 @@ public class GameController : MonoBehaviour {
     [SerializeField]
     private int killCount;
 
+    [SerializeField]
+    private double baseIncome,  currentIncome;
+    [SerializeField]
+    private float incomeWeight;
+    [SerializeField]
+    private int enemyLevel, exp;
+
 	// Use this for initialization
 	void Awake () {
         player = GameObject.FindGameObjectWithTag("Player").
@@ -27,7 +34,12 @@ public class GameController : MonoBehaviour {
         money = 0;
         playerAtk = 1;
         killCount = 0;
-	}
+        enemyLevel = 0;
+        baseIncome = 10;
+        incomeWeight = 1.03f;
+        currentIncome = baseIncome * Mathf.Pow(incomeWeight,enemyLevel);
+
+    }
 
     void Start()
     {
@@ -37,6 +49,35 @@ public class GameController : MonoBehaviour {
     public void Touch()
     {
         player.Attack(playerAtk);
+    }
+
+    public void EarnMoney()
+    {
+        exp++;
+        if (exp % 10 == 0)
+        {
+            enemyLevel++;
+            currentIncome = baseIncome * Mathf.Pow(incomeWeight, enemyLevel);
+        }
+        money += currentIncome;
+    }
+
+    public void PowerUP()
+    {
+        if (money >= 100)
+        {
+            playerAtk++;
+            money -= 100;
+        }
+    }
+
+    public void LooseMoney()
+    {
+        money--;
+        if (money <= 0)
+        {
+            player.SetDead();
+        }
     }
 
     private IEnumerator SpawnEnemy()

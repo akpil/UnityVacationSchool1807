@@ -17,15 +17,23 @@ public class PlayerController : MonoBehaviour {
 
     public void Attack(double atk)
     {
-        anim.SetBool(AnimationHashList.AnimHashAttack, true);
-        Bullet t = bulletP.GetFromPool();
-        t.transform.position = bulletPos.position;
-        t.SetAtk(atk);
-        t.gameObject.SetActive(true);
+        if (!anim.GetBool(AnimationHashList.AnimHashDead))
+        {
+            anim.SetBool(AnimationHashList.AnimHashAttack, true);
+            Bullet t = bulletP.GetFromPool();
+            t.transform.position = bulletPos.position;
+            t.SetAtk(atk);
+            t.gameObject.SetActive(true);
+        }
     }
     public void AttackFinish()
     {
         anim.SetBool(AnimationHashList.AnimHashAttack, false);
+    }
+
+    public void SetDead()
+    {
+        anim.SetBool(AnimationHashList.AnimHashDead, true);
     }
 
     // Update is called once per frame

@@ -11,18 +11,23 @@ public class EnemyController : MonoBehaviour {
     [SerializeField]
     private Animator anim;
 
+    private GameController control;
+
     private double currentHP;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        control = GameObject.FindGameObjectWithTag("GameController").
+                                        GetComponent<GameController>();
     }
 
     public void SetUP(double hp, float speed)
     {
         currentHP = hp;
         Speed = speed;
+        rb.velocity = Vector2.left * Speed;
     }
 
     void OnEnable()
@@ -49,11 +54,12 @@ public class EnemyController : MonoBehaviour {
     {
         Debug.Log("hit damage : " + value.ToString());
         currentHP -= value;
-        if (currentHP <= 0)
+        if (currentHP <= 0 && !anim.GetBool(AnimationHashList.AnimHashDead))
         {
             anim.SetBool(AnimationHashList.AnimHashDead, true);
             rb.velocity = Vector2.zero;
             StartCoroutine(Hide());
+            control.EarnMoney();
         }
     }
 
@@ -61,6 +67,11 @@ public class EnemyController : MonoBehaviour {
     {
         yield return new WaitForSeconds(HideTimer);
         gameObject.SetActive(false);
+    }
+
+    public void PlayerAttack()
+    {
+        control.LooseMoney();
     }
 
 	// Update is called once per frame

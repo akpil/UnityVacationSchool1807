@@ -206,6 +206,7 @@ MonoBehaviour:
   Speed: 1
   HideTimer: 1
   anim: {fileID: 0}
+  atkTrigger: {fileID: 114681179106136650}
 --- !u!114 &114681179106136650
 MonoBehaviour:
   m_ObjectHideFlags: 1

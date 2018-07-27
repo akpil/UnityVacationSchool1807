@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour {
 
     void Start()
     {
-        StartCoroutine(SpawnEnemy());
+        //StartCoroutine(SpawnEnemy());
     }
 
     public void Touch()
@@ -92,6 +92,13 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void TempSpawn()
+    {
+        EnemyController temp = enemyP.GetFromPool();
+        temp.transform.position = enemySpawnPoint.position;
+        temp.SetUP(20, .5f);
+        temp.gameObject.SetActive(true);
+    }
 
 	// Update is called once per frame
 	void Update () {

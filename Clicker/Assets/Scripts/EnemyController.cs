@@ -11,6 +11,9 @@ public class EnemyController : MonoBehaviour {
     [SerializeField]
     private Animator anim;
 
+    [SerializeField]
+    private EnemyAttackTrigger atkTrigger;
+
     private GameController control;
 
     private double currentHP;
@@ -35,7 +38,10 @@ public class EnemyController : MonoBehaviour {
         rb.velocity = Vector2.left * Speed;
     }
 
-
+    void OnDisable()
+    {
+        atkTrigger.ResetTarget();
+    }
 
 	// Use this for initialization
 	void Start () {

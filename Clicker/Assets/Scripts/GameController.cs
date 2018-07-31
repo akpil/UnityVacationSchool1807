@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour {
 
     void Start()
     {
-        //StartCoroutine(SpawnEnemy());
+        StartCoroutine(SpawnEnemy());
     }
 
     public void Touch()
@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour {
         player.Attack(playerAtk);
     }
 
-    public void EarnMoney()
+    public double EarnMoney()
     {
         exp++;
         if (exp % 10 == 0)
@@ -62,6 +62,7 @@ public class GameController : MonoBehaviour {
             currentIncome = baseIncome * Mathf.Pow(incomeWeight, enemyLevel);
         }
         money += currentIncome;
+        return currentIncome;
     }
 
     public void PowerUP()

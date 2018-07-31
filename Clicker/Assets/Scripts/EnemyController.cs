@@ -8,7 +8,6 @@ public class EnemyController : MonoBehaviour {
     private float Speed;
     [SerializeField]
     private float HideTimer;
-    [SerializeField]
     private Animator anim;
 
     [SerializeField]
@@ -17,6 +16,9 @@ public class EnemyController : MonoBehaviour {
     private GameController control;
 
     private double currentHP;
+    private double maxHP;
+    [SerializeField]
+    private Transform HPBarPos;
 
     void Awake()
     {
@@ -28,7 +30,7 @@ public class EnemyController : MonoBehaviour {
 
     public void SetUP(double hp, float speed)
     {
-        currentHP = hp;
+        maxHP = currentHP = hp;
         Speed = speed;
         rb.velocity = Vector2.left * Speed;
     }
@@ -56,16 +58,27 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
+    private HPBarController hpbar;
     public void Hit(double value)
     {
         Debug.Log("hit damage : " + value.ToString());
         currentHP -= value;
+        if (hpbar == null || !hpbar.gameObject.activeInHierarchy)
+        {
+            hpbar = control.GetHPBar();
+            hpbar.gameObject.SetActive(true);
+        }
+        hpbar.transform.position = HPBarPos.position;
         if (currentHP <= 0 && !anim.GetBool(AnimationHashList.AnimHashDead))
         {
             anim.SetBool(AnimationHashList.AnimHashDead, true);
             rb.velocity = Vector2.zero;
             StartCoroutine(Hide());
-            control.EarnMoney();
+            hpbar.ShowIncome(control.EarnMoney().ToString("N1"));
+        }
+        else
+        {
+            hpbar.SetHP((float)(currentHP / maxHP));
         }
     }
 

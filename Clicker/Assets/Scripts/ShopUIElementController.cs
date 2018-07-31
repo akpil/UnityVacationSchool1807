@@ -22,6 +22,8 @@ public class ShopUIElementController : MonoBehaviour {
         titleText.text = title;
         contentsText.text = string.Format(contentsText.text, contents);
         purchaseText.text = string.Format(purchaseText.text, cost);
+
+        string.Format("text string is {0}, {1}", 10, 20);
     }
 
 	// Update is called once per frame

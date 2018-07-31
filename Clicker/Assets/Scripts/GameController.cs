@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour {
     private Transform enemySpawnPoint;
     [SerializeField]
     private EnemyPool enemyP;
+    [SerializeField]
+    private HPBarPool enemyHPP;
 
     [SerializeField]
     private double money;
@@ -98,6 +100,16 @@ public class GameController : MonoBehaviour {
         temp.transform.position = enemySpawnPoint.position;
         temp.SetUP(20, .5f);
         temp.gameObject.SetActive(true);
+    }
+
+    public HPBarController GetHPBar()
+    {
+        return enemyHPP.GetFromPool();
+    }
+
+    public void MakeHPBar()
+    {
+        enemyHPP.GetFromPool();
     }
 
 	// Update is called once per frame

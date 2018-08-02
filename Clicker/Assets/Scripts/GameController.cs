@@ -29,10 +29,14 @@ public class GameController : MonoBehaviour {
     [SerializeField]
     private int enemyLevel, exp;
 
+    private MainUIController UI;
+
 	// Use this for initialization
 	void Awake () {
         player = GameObject.FindGameObjectWithTag("Player").
                                 GetComponent<PlayerController>();
+        UI = GameObject.FindGameObjectWithTag("UI").
+                                GetComponent<MainUIController>();
         money = 0;
         playerAtk = 1;
         killCount = 0;
@@ -62,6 +66,7 @@ public class GameController : MonoBehaviour {
             currentIncome = baseIncome * Mathf.Pow(incomeWeight, enemyLevel);
         }
         money += currentIncome;
+        UI.ShowMoney(money);
         return currentIncome;
     }
 
@@ -71,7 +76,13 @@ public class GameController : MonoBehaviour {
         {
             playerAtk++;
             money -= 100;
+            UI.ShowMoney(money);
         }
+    }
+
+    public void AutoIncome()
+    {
+        Debug.Log("auto income clicked");
     }
 
     public void LooseMoney()

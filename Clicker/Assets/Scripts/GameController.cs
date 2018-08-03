@@ -31,6 +31,9 @@ public class GameController : MonoBehaviour {
 
     private MainUIController UI;
 
+    private int supporterCount;
+    [SerializeField]
+    private SupporterPool supporterP;
 	// Use this for initialization
 	void Awake () {
         player = GameObject.FindGameObjectWithTag("Player").
@@ -43,8 +46,15 @@ public class GameController : MonoBehaviour {
         enemyLevel = 0;
         baseIncome = 10;
         incomeWeight = 1.03f;
+        supporterCount = 0;
         currentIncome = baseIncome * Mathf.Pow(incomeWeight,enemyLevel);
 
+    }
+
+    public void AddSupporter()
+    {
+        supporterP.GetFromPool(supporterCount);
+        supporterCount++;
     }
 
     void Start()
@@ -77,6 +87,7 @@ public class GameController : MonoBehaviour {
             playerAtk++;
             money -= 100;
             UI.ShowMoney(money);
+            UI.ShowAttack(playerAtk);
         }
     }
 
@@ -88,6 +99,7 @@ public class GameController : MonoBehaviour {
     public void LooseMoney()
     {
         money--;
+        UI.ShowMoney(money);
         if (money <= 0)
         {
             player.SetDead();
